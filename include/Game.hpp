@@ -56,10 +56,18 @@ private:
   void display_game_state() const;
   void add_to_battle_log(const TurnInfo &info);
 
-  Player &current_player() noexcept { return *m_players[m_current_player_index]; }
-  Player &opponent_player() noexcept { return *m_players[1 - m_current_player_index]; }
-  const Player &current_player() const noexcept { return *m_players[m_current_player_index]; }
-  const Player &opponent_player() const noexcept { return *m_players[1 - m_current_player_index]; }
+  Player &current_player() noexcept {
+    return *m_players[m_current_player_index];
+  }
+  Player &opponent_player() noexcept {
+    return *m_players[1 - m_current_player_index];
+  }
+  const Player &current_player() const noexcept {
+    return *m_players[m_current_player_index];
+  }
+  const Player &opponent_player() const noexcept {
+    return *m_players[1 - m_current_player_index];
+  }
 };
 
 } // namespace battleship

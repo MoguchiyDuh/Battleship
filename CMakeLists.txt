@@ -6,8 +6,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Find Boost with ASIO
+find_package(Boost 1.74 REQUIRED)
+
 include_directories(include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories(${Boost_INCLUDE_DIRS})
 
 set(SOURCES
     src/main.cpp
@@ -17,6 +21,9 @@ set(SOURCES
     src/core/Player.cpp
     src/core/Game.cpp
     src/core/AIStrategy.cpp
+    src/core/Renderer.cpp
+    src/core/OnlineGame.cpp
+    src/net/NetworkManager.cpp
 )
 
 add_executable(battleship ${SOURCES})

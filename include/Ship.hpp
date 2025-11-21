@@ -24,7 +24,8 @@ public:
   ~Ship() = default;
 
   bool contains(const Position &pos) const noexcept;
-  bool register_hit(const Position &pos) noexcept;  // returns true if hit was new
+  bool
+  register_hit(const Position &pos) noexcept; // returns true if hit was new
   bool is_sunk() const noexcept { return m_hit_count >= size(); }
 
   ShipType type() const noexcept { return m_type; }
@@ -47,7 +48,7 @@ private:
   Orientation m_orientation;
   uint8_t m_hit_count{0};
 
-  std::array<Position, 4> m_positions{};  // max ship size is 4
+  std::array<Position, 4> m_positions{}; // max ship size is 4
   uint8_t m_position_count{0};
 
   void validate_and_build_positions(const Position &start_pos);

@@ -160,6 +160,29 @@ AttackResult Board::attack(const Position &pos) {
   return AttackResult::MISS;
 }
 
+void Board::mark_attack(const Position &pos, AttackResult result) {
+  if (!is_valid_position(pos)) {
+    return;
+  }
+
+  m_attacked_positions.insert(pos);
+  CellState &cell = m_grid[pos.y][pos.x];
+
+  switch (result) {
+  case AttackResult::MISS:
+    cell = CellState::MISS;
+    break;
+  case AttackResult::HIT:
+    cell = CellState::HIT;
+    break;
+  case AttackResult::SUNK:
+    cell = CellState::SUNK;
+    break;
+  default:
+    break;
+  }
+}
+
 const Ship *Board::get_ship_at(const Position &pos) const noexcept {
   if (!is_valid_position(pos)) {
     return nullptr;

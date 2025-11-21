@@ -34,7 +34,8 @@ public:
                       Orientation orientation) const noexcept;
 
   AttackResult attack(const Position &pos);
-  bool is_game_over() const noexcept;  // all ships sunk
+  void mark_attack(const Position &pos, AttackResult result); // for tracking
+  bool is_game_over() const noexcept;                         // all ships sunk
 
   CellState get_cell_state(const Position &pos) const;
   const Ship *get_ship_at(const Position &pos) const noexcept;
@@ -62,7 +63,7 @@ public:
 
 private:
   Grid m_grid{};
-  ShipLookup m_ship_lookup{};  // fast O(1) ship lookup by position
+  ShipLookup m_ship_lookup{}; // fast O(1) ship lookup by position
   std::vector<std::unique_ptr<Ship>> m_ships;
 
   // O(1) duplicate attack detection
@@ -72,11 +73,13 @@ private:
   uint16_t m_successful_hits{0};
 
   // Display symbols: EMPTY, SHIP, HIT, MISS, SUNK
-  static constexpr std::array<char, 5> HIDDEN_SYMBOLS = {'~', '~', 'X', 'O', '#'};
-  static constexpr std::array<char, 5> SHOWN_SYMBOLS = {'~', 'S', 'X', 'O', '#'};
+  static constexpr std::array<char, 5> HIDDEN_SYMBOLS = {'~', '~', 'X', 'O',
+                                                         '#'};
+  static constexpr std::array<char, 5> SHOWN_SYMBOLS = {'~', 'S', 'X', 'O',
+                                                        '#'};
 
   bool is_valid_position(const Position &pos) const noexcept;
-  bool is_area_clear(const Position &pos) const noexcept;  // no adjacent ships
+  bool is_area_clear(const Position &pos) const noexcept; // no adjacent ships
   void update_sunk_ship_cells(const Ship &ship) noexcept;
   void mark_surrounding_cells_as_miss(const Position &pos) noexcept;
   char get_cell_symbol(CellState state, bool show_ships) const noexcept;

@@ -53,7 +53,7 @@ public:
 private:
   mutable std::mt19937 m_rng;
   mutable std::uniform_int_distribution<config::GridCoord> m_dist;
-  std::vector<Position> m_hunt_targets;  // adjacent cells to check
+  std::vector<Position> m_hunt_targets; // adjacent cells to check
 
   std::optional<Position> find_adjacent_target(
       const Position &hit_pos,
@@ -84,10 +84,10 @@ private:
   Mode m_mode{Mode::HUNT};
   Direction m_direction{Direction::NONE};
 
-  std::vector<Position> m_current_ship_hits;  // hits on current ship
+  std::vector<Position> m_current_ship_hits; // hits on current ship
   std::vector<Position> m_hunt_targets;
-  std::vector<Position> m_chessboard_cells;   // cached chessboard pattern
-  bool m_chessboard_dirty{true};              // rebuild flag
+  std::vector<Position> m_chessboard_cells; // cached chessboard pattern
+  bool m_chessboard_dirty{true};            // rebuild flag
 
   std::optional<Position> get_target_position(
       const std::unordered_set<Position, Position::Hash> &attacked) const;
@@ -103,7 +103,8 @@ private:
 };
 
 // Factory function
-inline std::unique_ptr<AttackStrategy> make_strategy(config::Difficulty difficulty) {
+inline std::unique_ptr<AttackStrategy>
+make_strategy(config::Difficulty difficulty) {
   switch (difficulty) {
   case config::Difficulty::EASY:
     return std::make_unique<RandomStrategy>();

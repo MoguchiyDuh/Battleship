@@ -1,5 +1,8 @@
 #include "Renderer.hpp"
 #include "Game.hpp"
+#include "StringUtils.hpp"
+#include <format>
+#include <iostream>
 
 namespace battleship {
 
@@ -115,14 +118,12 @@ std::string Renderer::render_statistics(const Board &player_board,
   return result;
 }
 
-std::string Renderer::render_game_over(std::string_view winner_name,
-                                       std::string_view loser_name,
-                                       const Board &winner_board,
-                                       const Board &loser_board,
-                                       uint32_t winner_attacks,
-                                       float winner_accuracy,
-                                       uint32_t loser_attacks,
-                                       float loser_accuracy) {
+std::string
+Renderer::render_game_over(std::string_view winner_name,
+                           std::string_view loser_name,
+                           const Board &winner_board, const Board &loser_board,
+                           uint32_t winner_attacks, float winner_accuracy,
+                           uint32_t loser_attacks, float loser_accuracy) {
   std::string result = render_header();
 
   result += "【 GAME OVER 】\n\n";

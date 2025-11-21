@@ -68,8 +68,8 @@ void HuntStrategy::on_attack_result(const Position &pos, AttackResult result) {
       const int new_x = pos.x + dx;
       const int new_y = pos.y + dy;
 
-      if (new_x >= 0 && new_x < config::GRID_SIZE &&
-          new_y >= 0 && new_y < config::GRID_SIZE) {
+      if (new_x >= 0 && new_x < config::GRID_SIZE && new_y >= 0 &&
+          new_y < config::GRID_SIZE) {
         m_hunt_targets.emplace_back(static_cast<config::GridCoord>(new_x),
                                     static_cast<config::GridCoord>(new_y));
       }
@@ -88,8 +88,8 @@ std::optional<Position> HuntStrategy::find_adjacent_target(
     const int new_x = hit_pos.x + dx;
     const int new_y = hit_pos.y + dy;
 
-    if (new_x >= 0 && new_x < config::GRID_SIZE &&
-        new_y >= 0 && new_y < config::GRID_SIZE) {
+    if (new_x >= 0 && new_x < config::GRID_SIZE && new_y >= 0 &&
+        new_y < config::GRID_SIZE) {
       const Position candidate{static_cast<config::GridCoord>(new_x),
                                static_cast<config::GridCoord>(new_y)};
       if (!attacked.contains(candidate)) {
@@ -161,7 +161,8 @@ Position TargetStrategy::get_attack_position(
   return get_random_position(attacked_positions);
 }
 
-void TargetStrategy::on_attack_result(const Position &pos, AttackResult result) {
+void TargetStrategy::on_attack_result(const Position &pos,
+                                      AttackResult result) {
   if (result == AttackResult::HIT) {
     m_current_ship_hits.emplace_back(pos);
     m_mode = Mode::TARGET;
@@ -173,8 +174,8 @@ void TargetStrategy::on_attack_result(const Position &pos, AttackResult result) 
         const int new_x = pos.x + dx;
         const int new_y = pos.y + dy;
 
-        if (new_x >= 0 && new_x < config::GRID_SIZE &&
-            new_y >= 0 && new_y < config::GRID_SIZE) {
+        if (new_x >= 0 && new_x < config::GRID_SIZE && new_y >= 0 &&
+            new_y < config::GRID_SIZE) {
           m_hunt_targets.emplace_back(static_cast<config::GridCoord>(new_x),
                                       static_cast<config::GridCoord>(new_y));
         }
@@ -262,7 +263,8 @@ Position TargetStrategy::get_random_position(
   }
 
   if (!available.empty()) {
-    std::uniform_int_distribution<std::size_t> idx_dist(0, available.size() - 1);
+    std::uniform_int_distribution<std::size_t> idx_dist(0,
+                                                        available.size() - 1);
     return available[idx_dist(m_rng)];
   }
 

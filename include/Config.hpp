@@ -21,7 +21,7 @@ enum class ShipType : uint8_t {
 
 struct ShipConfig {
   ShipType type;
-  uint8_t count;  // how many of this ship type
+  uint8_t count; // how many of this ship type
   std::string_view name;
 
   constexpr GridSize size() const noexcept {
@@ -36,8 +36,8 @@ inline constexpr std::array<ShipConfig, 4> SHIP_CONFIGS = {
      {ShipType::DESTROYER, 3, "Destroyer"},
      {ShipType::PATROL_BOAT, 4, "Patrol Boat"}}};
 
-inline constexpr uint8_t TOTAL_SHIPS = 10;       // 1+2+3+4
-inline constexpr uint8_t TOTAL_SHIP_CELLS = 20;  // 4+6+6+4
+inline constexpr uint8_t TOTAL_SHIPS = 10;      // 1+2+3+4
+inline constexpr uint8_t TOTAL_SHIP_CELLS = 20; // 4+6+6+4
 
 enum class Difficulty : uint8_t { EASY = 0, MEDIUM = 1, HARD = 2 };
 

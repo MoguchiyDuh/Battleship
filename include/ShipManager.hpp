@@ -29,7 +29,8 @@ inline config::GridSize get_ship_size(config::ShipType type) noexcept {
   return static_cast<config::GridSize>(type);
 }
 
-inline bool are_all_ships_placed(const std::vector<std::unique_ptr<Ship>> &ships) noexcept {
+inline bool
+are_all_ships_placed(const std::vector<std::unique_ptr<Ship>> &ships) noexcept {
   std::array<uint8_t, config::SHIP_CONFIGS.size()> counts{};
 
   for (const auto &ship : ships) {

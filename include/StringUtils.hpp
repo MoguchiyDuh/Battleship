@@ -16,7 +16,8 @@ inline std::string repeat(std::string_view s, std::size_t n) {
 }
 
 // center("hello", 20) -> "       hello        "
-inline std::string center(std::string_view text, std::size_t width, char fill = ' ') {
+inline std::string center(std::string_view text, std::size_t width,
+                          char fill = ' ') {
   if (text.size() >= width) {
     return std::string(text);
   }
@@ -32,7 +33,8 @@ inline std::string center(std::string_view text, std::size_t width, char fill = 
 }
 
 // ljust("hello", 10) -> "hello     "
-inline std::string ljust(std::string_view text, std::size_t width, char fill = ' ') {
+inline std::string ljust(std::string_view text, std::size_t width,
+                         char fill = ' ') {
   if (text.size() >= width) {
     return std::string(text);
   }
@@ -44,7 +46,8 @@ inline std::string ljust(std::string_view text, std::size_t width, char fill = '
 }
 
 // rjust("hello", 10) -> "     hello"
-inline std::string rjust(std::string_view text, std::size_t width, char fill = ' ') {
+inline std::string rjust(std::string_view text, std::size_t width,
+                         char fill = ' ') {
   if (text.size() >= width) {
     return std::string(text);
   }

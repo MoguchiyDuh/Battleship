@@ -1,4 +1,6 @@
 #include "Game.hpp"
+#include "OnlineGame.hpp"
+#include "net/NetworkManager.hpp"
 #include <format>
 #include <iostream>
 #include <limits>
@@ -8,40 +10,66 @@ using namespace battleship;
 void print_menu() {
   std::cout << "\n=== BATTLESHIP ===\n";
   std::cout << "Select game mode:\n";
-  std::cout << "  1. Player vs Player\n";
-  std::cout << "  2. Player vs Computer (Easy)\n";
-  std::cout << "  3. Player vs Computer (Medium)\n";
-  std::cout << "  4. Player vs Computer (Hard)\n";
-  std::cout << "  5. Computer vs Computer (Watch)\n";
+  std::cout << "  1. Player vs Player (Local)\n";
+  std::cout << "  2. Player vs Player (Online - Host)\n";
+  std::cout << "  3. Player vs Player (Online - Join)\n";
+  std::cout << "  4. Player vs Computer (Easy)\n";
+  std::cout << "  5. Player vs Computer (Medium)\n";
+  std::cout << "  6. Player vs Computer (Hard)\n";
+  std::cout << "  7. Computer vs Computer (Watch)\n";
   std::cout << "  0. Exit\n";
   std::cout << "\nChoice: ";
 }
 
-[[nodiscard]] std::optional<GameMode> get_game_mode() {
+void run_online_host() {
+  net::NetworkManager network;
+  if (!network.host()) {
+    std::cerr << "Failed to start hosting\n";
+    return;
+  }
+
+  OnlineGame game(network);
+  game.initialize();
+  game.run();
+}
+
+void run_online_join() {
+  std::string host_ip;
+  std::cout << "Enter host IP: ";
+  std::cin >> host_ip;
+
+  net::NetworkManager network;
+  if (!network.join(host_ip)) {
+    std::cerr << "Failed to connect to host\n";
+    return;
+  }
+
+  OnlineGame game(network);
+  game.initialize();
+  game.run();
+}
+
+// Returns: -1 = exit, 0 = online host, 1 = online join, 2+ = GameMode
+[[nodiscard]] int get_menu_choice() {
   int choice;
   std::cin >> choice;
 
   if (std::cin.fail()) {
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    return std::nullopt;
+    return -1;
   }
 
-  switch (choice) {
-  case 1:
-    return GameMode::PVP;
-  case 2:
-    return GameMode::PVE_EASY;
-  case 3:
-    return GameMode::PVE_MEDIUM;
-  case 4:
-    return GameMode::PVE_HARD;
-  case 5:
-    return GameMode::AI_VS_AI;
-  case 0:
-    return std::nullopt;
-  default:
-    return std::nullopt;
+  return choice;
+}
+
+void run_local_game(GameMode mode) {
+  Game game(mode);
+  game.initialize();
+  game.start();
+
+  while (!game.is_game_over()) {
+    game.run_turn();
   }
 }
 
@@ -49,19 +77,36 @@ int main() {
   try {
     while (true) {
       print_menu();
-      const auto mode_opt = get_game_mode();
+      const int choice = get_menu_choice();
 
-      if (!mode_opt) {
+      switch (choice) {
+      case 0:
         std::cout << "Thanks for playing!\n";
+        return 0;
+      case 1:
+        run_local_game(GameMode::PVP);
         break;
-      }
-
-      Game game(*mode_opt);
-      game.initialize();
-      game.start();
-
-      while (!game.is_game_over()) {
-        game.run_turn();
+      case 2:
+        run_online_host();
+        break;
+      case 3:
+        run_online_join();
+        break;
+      case 4:
+        run_local_game(GameMode::PVE_EASY);
+        break;
+      case 5:
+        run_local_game(GameMode::PVE_MEDIUM);
+        break;
+      case 6:
+        run_local_game(GameMode::PVE_HARD);
+        break;
+      case 7:
+        run_local_game(GameMode::AI_VS_AI);
+        break;
+      default:
+        std::cout << "Invalid choice\n";
+        continue;
       }
 
       std::cout << "\nPlay again? (y/n): ";
