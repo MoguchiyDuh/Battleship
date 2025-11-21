@@ -27,9 +27,12 @@ target_compile_options(battleship PRIVATE
     -Wpedantic
     -Werror
     -O3
-    -march=native
     -flto
 )
+
+if(NOT ANDROID)
+    target_compile_options(battleship PRIVATE -march=native)
+endif()
 
 target_link_options(battleship PRIVATE
     -flto
