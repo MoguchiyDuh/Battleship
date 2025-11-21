@@ -137,19 +137,20 @@ void Player::record_attack_result(const Position &pos, AttackResult result) {
 
 Position Player::get_human_attack() {
   std::string input;
-  std::cout << "Enter attack coordinates (e.g., A5): ";
-  std::cin >> input;
 
-  if (auto pos_opt = Position::try_parse(input); pos_opt) {
-    if (is_valid_attack(*pos_opt)) {
-      return *pos_opt;
+  while (true) {
+    std::cout << "Enter attack coordinates (e.g., A5): ";
+    std::cin >> input;
+
+    if (auto pos_opt = Position::try_parse(input); pos_opt) {
+      if (is_valid_attack(*pos_opt)) {
+        return *pos_opt;
+      }
+      std::cout << "Already attacked that position. Try again.\n";
+    } else {
+      std::cout << "Invalid input. Try again.\n";
     }
-    std::cout << "Already attacked that position. Try again.\n";
-  } else {
-    std::cout << "Invalid input. Try again.\n";
   }
-
-  return get_human_attack();
 }
 
 Position Player::get_ai_attack() {

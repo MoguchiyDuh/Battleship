@@ -34,8 +34,9 @@ public:
                       Orientation orientation) const noexcept;
 
   AttackResult attack(const Position &pos);
-  void mark_attack(const Position &pos, AttackResult result); // for tracking
-  bool is_game_over() const noexcept;                         // all ships sunk
+  void mark_attack(const Position &pos, AttackResult result);    // for tracking
+  void mark_sunk_ship(const std::vector<Position> &ship_cells);  // mark ship + surroundings
+  bool is_game_over() const noexcept;                            // all ships sunk
 
   CellState get_cell_state(const Position &pos) const;
   const Ship *get_ship_at(const Position &pos) const noexcept;

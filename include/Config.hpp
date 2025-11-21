@@ -3,6 +3,7 @@
 #include <array>
 #include <cstdint>
 #include <string_view>
+#include <utility>
 
 namespace battleship::config {
 
@@ -40,5 +41,13 @@ inline constexpr uint8_t TOTAL_SHIPS = 10;      // 1+2+3+4
 inline constexpr uint8_t TOTAL_SHIP_CELLS = 20; // 4+6+6+4
 
 enum class Difficulty : uint8_t { EASY = 0, MEDIUM = 1, HARD = 2 };
+
+// Cardinal directions for adjacency checks (up, down, left, right)
+inline constexpr std::array<std::pair<int, int>, 4> CARDINAL_DIRECTIONS = {
+    {{0, -1}, {0, 1}, {-1, 0}, {1, 0}}};
+
+// All 8 directions including diagonals
+inline constexpr std::array<std::pair<int, int>, 8> ALL_DIRECTIONS = {
+    {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}};
 
 } // namespace battleship::config

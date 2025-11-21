@@ -12,14 +12,15 @@ using boost::asio::ip::tcp;
 
 // Message types for protocol
 enum class MessageType : uint8_t {
-  ATTACK = 1,      // Position attack
-  RESULT = 2,      // AttackResult response
-  BOARD_STATE = 3, // Full rendered board string
-  GAME_START = 4,  // Game is starting
-  GAME_OVER = 5,   // Game ended
-  YOUR_TURN = 6,   // Notify it's your turn
-  PING = 7,
-  PONG = 8
+  ATTACK = 1,       // Position attack
+  RESULT = 2,       // AttackResult response (1 byte)
+  RESULT_SUNK = 3,  // Ship sunk with positions "A1,A2,A3"
+  BOARD_STATE = 4,
+  GAME_START = 5,
+  GAME_OVER = 6,
+  YOUR_TURN = 7,
+  PING = 8,
+  PONG = 9
 };
 
 // Simple message: type (1 byte) + length (2 bytes) + payload

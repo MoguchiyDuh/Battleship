@@ -47,14 +47,12 @@ private:
 
   static constexpr int SHOT_DELAY_MS = 1500;
 
-  void clear_console() const;
   void switch_turn() noexcept;
   void handle_shot(const Position &pos);
   void update_game_state();
   void announce_winner() const;
   void sleep_ms(int milliseconds) const;
   void display_game_state() const;
-  void add_to_battle_log(const TurnInfo &info);
 
   Player &current_player() noexcept {
     return *m_players[m_current_player_index];

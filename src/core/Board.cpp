@@ -72,10 +72,7 @@ bool Board::can_place_ship(const Position &pos, config::GridSize size,
 }
 
 bool Board::is_area_clear(const Position &pos) const noexcept {
-  constexpr std::array<std::pair<int, int>, 8> directions = {
-      {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}};
-
-  for (const auto &[dx, dy] : directions) {
+  for (const auto &[dx, dy] : config::ALL_DIRECTIONS) {
     const int check_x = pos.x + dx;
     const int check_y = pos.y + dy;
 
@@ -183,6 +180,38 @@ void Board::mark_attack(const Position &pos, AttackResult result) {
   }
 }
 
+void Board::mark_sunk_ship(const std::vector<Position> &ship_cells) {
+  // Mark all ship cells as SUNK
+  for (const auto &pos : ship_cells) {
+    if (is_valid_position(pos)) {
+      m_grid[pos.y][pos.x] = CellState::SUNK;
+      m_attacked_positions.insert(pos);
+    }
+  }
+
+  // Mark surrounding cells as MISS
+  for (const auto &pos : ship_cells) {
+    for (int dy = -1; dy <= 1; ++dy) {
+      for (int dx = -1; dx <= 1; ++dx) {
+        if (dx == 0 && dy == 0)
+          continue;
+
+        const int nx = pos.x + dx;
+        const int ny = pos.y + dy;
+
+        if (nx >= 0 && nx < GRID_SIZE && ny >= 0 && ny < GRID_SIZE) {
+          Position neighbor{static_cast<config::GridCoord>(nx),
+                            static_cast<config::GridCoord>(ny)};
+          if (m_grid[ny][nx] == CellState::EMPTY) {
+            m_grid[ny][nx] = CellState::MISS;
+            m_attacked_positions.insert(neighbor);
+          }
+        }
+      }
+    }
+  }
+}
+
 const Ship *Board::get_ship_at(const Position &pos) const noexcept {
   if (!is_valid_position(pos)) {
     return nullptr;
@@ -204,10 +233,7 @@ void Board::update_sunk_ship_cells(const Ship &ship) noexcept {
 }
 
 void Board::mark_surrounding_cells_as_miss(const Position &pos) noexcept {
-  constexpr std::array<std::pair<int, int>, 8> directions = {
-      {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}};
-
-  for (const auto &[dx, dy] : directions) {
+  for (const auto &[dx, dy] : config::ALL_DIRECTIONS) {
     const int check_x = pos.x + dx;
     const int check_y = pos.y + dy;
 

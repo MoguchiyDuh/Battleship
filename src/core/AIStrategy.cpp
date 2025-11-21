@@ -3,9 +3,8 @@
 
 namespace battleship::ai {
 
-// Shared direction offsets for adjacent cell checks
-static constexpr std::array<std::pair<int, int>, 4> DIRECTIONS = {
-    {{0, -1}, {0, 1}, {-1, 0}, {1, 0}}};
+// Use centralized direction constant
+using config::CARDINAL_DIRECTIONS;
 
 // ============================================================================
 // Easy AI: Pure random shots
@@ -64,7 +63,7 @@ Position HuntStrategy::get_attack_position(
 void HuntStrategy::on_attack_result(const Position &pos, AttackResult result) {
   if (result == AttackResult::HIT) {
     // Add adjacent cells to hunt targets
-    for (const auto &[dx, dy] : DIRECTIONS) {
+    for (const auto &[dx, dy] : CARDINAL_DIRECTIONS) {
       const int new_x = pos.x + dx;
       const int new_y = pos.y + dy;
 
@@ -84,7 +83,7 @@ std::optional<Position> HuntStrategy::find_adjacent_target(
     const Position &hit_pos,
     const std::unordered_set<Position, Position::Hash> &attacked) const {
 
-  for (const auto &[dx, dy] : DIRECTIONS) {
+  for (const auto &[dx, dy] : CARDINAL_DIRECTIONS) {
     const int new_x = hit_pos.x + dx;
     const int new_y = hit_pos.y + dy;
 
@@ -170,7 +169,7 @@ void TargetStrategy::on_attack_result(const Position &pos,
 
     // Add adjacent cells if no direction yet
     if (m_direction == Direction::NONE) {
-      for (const auto &[dx, dy] : DIRECTIONS) {
+      for (const auto &[dx, dy] : CARDINAL_DIRECTIONS) {
         const int new_x = pos.x + dx;
         const int new_y = pos.y + dy;
 
